@@ -4,22 +4,30 @@
 
 ## 📖 项目简介
 
-SMSBoom-Terminal 是一个基于 Python 的终端短信测试工具，通过调用多个第三方平台的短信接口进行功能测试。
+SMSBoom-Terminal-Lite 是一个基于 Python 的终端短信测试工具，采用抽象化设计和配置驱动架构，通过调用多个第三方平台的短信接口进行功能测试。
+
+**核心特点**：
+- 🎯 **完全配置驱动** - 所有接口配置外置到 JSON 文件
+- 🏗️ **面向对象设计** - 清晰的类结构和职责分离
+- 🔧 **易于扩展** - 支持动态添加/禁用接口
+- 📝 **完善的日志系统** - 详细记录运行状态
 
 ## ✨ 功能特性
 
-- 🎨 彩色终端界面，支持打字机效果输出
-- 📊 实时进度条显示和统计信息
-- 🔄 支持循环执行模式
-- 🌐 集成多个短信服务提供商接口
-- ⌨️ 交互式命令行操作
+- 🎨 **彩色终端界面** - 支持打字机效果输出和清屏功能
+- 📊 **实时进度显示** - 原地更新的进度条，显示成功/失败统计
+- 🔄 **自动循环执行** - 支持多轮循环，每轮间隔5秒倒计时
+- 🌐 **配置驱动接口** - 95+ 个短信接口，完全通过 JSON 配置管理
+- ⌨️ **交互式操作** - 手机号验证、操作确认等安全机制
+- 📋 **详细日志记录** - 自动记录所有请求到 smsboom.log 文件
+- 🎲 **随机任务调度** - 每轮任务顺序随机打乱，避免固定模式
 
 ## 🛠️ 技术栈
 
-- **Python 3.x**
-- **requests** - HTTP 请求库
-- **colorama** - 终端颜色支持
-- **urllib3** - URL 处理
+- **Python 3.8+** - 现代 Python 特性（类型提示、数据类等）
+- **requests==2.33.1** - HTTP 请求库
+- **colorama==0.4.6** - 跨平台终端颜色支持
+- **urllib3==2.6.3** - URL 处理和 SSL 警告抑制
 
 ## 📦 安装依赖
 
@@ -31,330 +39,391 @@ pip install requests colorama urllib3
 pip install -r requirements.txt
 ```
 
-## 🚀 使用方法
+## 🚀 快速开始
 
-### 版本选择
+### 1. 安装依赖
 
-本项目提供两个版本：
+```bash
+pip install -r requirements.txt
+```
 
-- **原版** (`SMSBoom.py`): 原始实现，包含150+个接口函数
-- **重构版** (`SMSBoom_Refactored.py`): ⭐ 推荐 - 抽象化设计，更易维护
+或手动安装：
 
-### 重构版（推荐）
+```bash
+pip install requests colorama urllib3
+```
 
-#### 基本运行
+### 2. 运行程序
 
 ```bash
 python SMSBoom_Refactored.py
 ```
 
-#### 使用配置文件
+### 3. 使用流程
 
-```bash
-# 先编辑 interfaces_config.json 添加你的接口配置
-python SMSBoom_Refactored.py
-```
-
-#### 动态添加接口
-
-```python
-from SMSBoom_Refactored import SMSBoomEngine
-
-engine = SMSBoomEngine()
-
-# 添加自定义接口
-engine.add_custom_interface({
-    'name': '我的接口',
-    'url': 'https://api.example.com/sms',
-    'method': 'POST',
-    'headers': {'Content-Type': 'application/json'},
-    'data_template': '{"phone":"{phone}"}'
-})
-
-engine.start()
-```
-
-### 原版
-
-#### 基本运行
-
-```bash
-python SMSBoom.py
-```
-
-#### 管理员模式
-
-```bash
-python SMSBoom.py --admin
-```
-
-输入管理员密钥: `openbase64`
-
-### 操作步骤
-
-1. 运行程序
-2. 输入目标手机号（11位数字）
-3. 确认执行操作
-4. 查看实时进度和结果统计
+1. **启动程序** - 显示 Logo 和免责声明
+2. **输入手机号** - 输入11位数字手机号（输入 `q` 退出）
+3. **确认操作** - 确认目标号码后开始执行
+4. **查看进度** - 实时显示发送进度和统计信息
+5. **自动循环** - 每轮完成后自动进入下一轮
 
 ## 📁 项目结构
 
 ```
-SMSBoom-Terminal/
-├── SMSBoom.py                    # 原版程序（3998行）
-├── SMSBoom_Refactored.py         # ⭐ 重构版程序（~400行）
-├── interfaces_config.json        # 接口配置文件（重构版使用）
+SMSBoom-Terminal-Lite/
+├── SMSBoom_Refactored.py         # 主程序（420行，抽象化设计）
+├── interfaces_complete.json      # 接口配置文件（95个接口）
+├── requirements.txt              # Python 依赖清单
+├── smsboom.log                   # 运行日志文件（自动生成）
 ├── README.md                     # 项目说明文档
-├── REFACTOR_GUIDE.md             # 重构详细说明文档
+├── LICENSE                       # 许可证文件
+├── .gitignore                    # Git 忽略配置
+├── .venv/                        # 虚拟环境（可选）
+├── __pycache__/                  # Python 缓存目录
 └── .idea/                        # IDE 配置文件
 ```
 
-## 🔧 代码架构
+## 🏗️ 代码架构
 
-### 重构版架构（推荐）
+### 核心组件
 
-采用面向对象设计，主要组件：
+采用面向对象设计，主要包含5个核心类：
 
-- **SMSInterface**: 短信接口配置类
-- **InterfaceManager**: 接口管理器（统一调度）
-- **ProgressTracker**: 进度追踪器
-- **UIController**: 用户界面控制器
-- **SMSBoomEngine**: 主引擎（协调器）
+#### 1. **SMSInterface** - 短信接口配置类
+- 封装单个短信接口的完整配置
+- 支持 GET/POST/PUT/DELETE 多种请求方法
+- 内置 `{phone}` 占位符替换机制
+- 自动处理 JSON 和表单两种内容类型
 
-**优势**:
-- ✅ 配置驱动，易于扩展
-- ✅ 代码复用率高（减少90%冗余）
-- ✅ 支持动态添加/禁用接口
-- ✅ 完善的日志系统
-- ✅ 类型提示和数据验证
+#### 2. **InterfaceManager** - 接口管理器
+- 从 `interfaces_complete.json` 加载所有接口配置
+- 管理接口的启用/禁用状态
+- 支持权重调度（每个接口可设置调用次数）
+- 提供动态添加/禁用接口的API
 
-详见 [REFACTOR_GUIDE.md](REFACTOR_GUIDE.md)
+#### 3. **ProgressTracker** - 进度追踪器
+- 实时计算成功率和失败率
+- 原地更新进度条（不换行）
+- 彩色显示（绿色成功/红色失败）
 
-### 原版架构
+#### 4. **UIController** - 用户界面控制器
+- Logo 和免责声明显示
+- 打字机效果输出
+- 手机号格式验证（11位数字）
+- 操作确认机制
+- 跨平台清屏功能
 
-- **界面模块**: Logo显示、打字机效果、清屏功能
-- **短信接口**: 150+ 个不同平台的短信发送函数
-- **控制模块**: 循环执行、进度追踪、任务调度
-- **验证模块**: 手机号格式验证、用户确认
+#### 5. **SMSBoomEngine** - 主引擎（协调器）
+- 整合所有组件
+- 控制程序主流程
+- 管理循环执行逻辑
+- 异常处理和优雅退出
 
-### 核心函数
+### 设计优势
 
-#### 重构版
-```python
-# 主入口
-main()                      # 启动程序
-
-# 核心类
-SMSBoomEngine()            # 引擎类
-InterfaceManager()         # 接口管理器
-SMSInterface()             # 接口配置类
-ProgressTracker()          # 进度追踪
-UIController()             # UI控制器
-```
-
-#### 原版
-```python
-sms_attack_main()          # 主执行函数
-main()                     # 程序入口
-SMS_logo()                 # 显示Logo
-disclaimer()               # 显示免责声明
-typewriter()               # 打字机效果输出
-```
+✅ **配置与代码分离** - 修改接口无需改动代码  
+✅ **高内聚低耦合** - 每个类职责单一明确  
+✅ **类型安全** - 使用 Python 类型提示和数据类  
+✅ **易于测试** - 组件独立，便于单元测试  
+✅ **可扩展性强** - 轻松添加新接口或功能模块
 
 ## ⚙️ 配置说明
 
-### 环境变量
+### 接口配置文件
 
-无需特殊环境变量配置。
-
-### 接口配置
-
-#### 重构版（推荐）
-
-使用 `interfaces_config.json` 配置文件管理所有接口：
+所有短信接口配置在 `interfaces_complete.json` 文件中：
 
 ```json
 {
+  "version": "2.0",
+  "description": "SMSBoom完整接口配置",
+  "total_interfaces": 95,
   "interfaces": [
     {
       "name": "接口名称",
-      "url": "https://api.example.com/sms",
+      "url": "https://api.example.com/sms?phone={phone}",
       "method": "POST",
-      "headers": {"Content-Type": "application/json"},
-      "data_template": "{\"phone\":\"{phone}\"}",
-      "weight": 1,
-      "enabled": true
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0..."
+      },
+      "data_template": "{\"mobile\":\"{phone}\"}",
+      "content_type": "application/json",
+      "timeout": 5,
+      "enabled": true,
+      "weight": 1
     }
   ]
 }
 ```
 
-**支持的配置项**:
-- `name`: 接口名称
-- `url`: 请求URL（支持{phone}占位符）
-- `method`: HTTP方法（GET/POST/PUT/DELETE）
-- `headers`: 请求头字典
-- `data_template`: 请求体模板
-- `content_type`: 内容类型
-- `timeout`: 超时时间
-- `weight`: 权重（每轮调用次数）
-- `enabled`: 是否启用
+### 配置项说明
 
-#### 原版
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `name` | string | ✅ | 接口名称（用于日志和显示） |
+| `url` | string | ✅ | 请求URL，支持 `{phone}` 占位符 |
+| `method` | string | ❌ | HTTP方法：GET/POST/PUT/DELETE（默认POST） |
+| `headers` | object | ❌ | 请求头字典（可选） |
+| `data_template` | string | ❌ | 请求体模板，支持 `{phone}` 占位符 |
+| `content_type` | string | ❌ | 内容类型：`application/json` 或 `application/x-www-form-urlencoded` |
+| `timeout` | integer | ❌ | 超时时间（秒），默认5秒 |
+| `enabled` | boolean | ❌ | 是否启用该接口，默认true |
+| `weight` | integer | ❌ | 权重（每轮调用次数），默认1次 |
 
-所有短信接口已内置在代码中，包括：
-- 电商平台
-- 出行服务
-- 教育机构
-- 政务服务
-- 医疗服务
-- 其他各类应用
+### 占位符使用
+
+- **URL中的占位符**: `https://api.example.com/send?phone={phone}`
+- **请求体中的占位符**: `{"mobile": "{phone}"}`
+
+程序会自动将 `{phone}` 替换为实际手机号。
+
+### 禁用接口
+
+如果某个接口失效，只需在配置文件中设置：
+
+```json
+{
+  "name": "失效接口",
+  "enabled": false  // 设置为false即可禁用
+}
+```
+
+### 调整调用频率
+
+通过 `weight` 参数控制每个接口的调用次数：
+
+```json
+{
+  "name": "高频接口",
+  "weight": 3  // 每轮调用3次
+}
+```
 
 ## 📊 运行示例
 
-### 重构版
+### 启动界面
 
 ```
 +-----------------------------------+
-         SMSBoom Terminal v2.0
+|     SMSBoom Terminal Lite v2.0    |
 +-----------------------------------+
       抽象化重构版 - 更安全高效
 
-⚠️  免责声明：本工具仅用于学习交流和安全测试...
+⚠️  免责声明：本工具仅用于学习交流和安全测试
+请确保使用符合当地法律法规
+任何滥用行为导致的后果由使用者自行承担
+感谢上一个项目的作者：https://github.com/MallocPointer/SMSBoom-Terminal
+```
 
+### 输入阶段
+
+```
 请输入目标手机号 (输入q退出): 13800138000
 即将开始操作，目标: 138****8000
 确认执行？(y/n): y
+```
 
+### 执行过程
+
+```
 ==================================================
 📱 目标号码: 138****8000
 🔄 循环次数: 1
 ==================================================
 
 [████████████░░░░░░░░░░░░] 40% | 成功: 60 | 失败: 40 | 任务: 100/250
+```
 
+### 完成统计
+
+```
 ✓ 本轮完成
 ⏱️  耗时: 12.35秒
 📊 成功率: 60.0%
-```
-
-### 原版
-
-```
-+-----------------------------------+
-            SMSBoom
-+-----------------------------------+
-
-免责声明：本工具仅用于学习交流目的...
-
-SMSBoom系统启动中...
-请输入目标手机号: 13800138000
-即将开始操作，目标号码: 不告诉你
-确认执行？(y/n): y
-
-========================================
-当前目标: 手机号/ 循环次数: 1
-========================================
-
-[████████████░░░░░░░░] 40% | 任务: 60/150
+即将开始下一轮...
+⏳ 等待: 5秒
 ```
 
 ## ⚠️ 注意事项
 
-1. **合法使用**: 仅在授权范围内使用
-2. **频率控制**: 避免对单一目标过度请求
-3. **隐私保护**: 不要泄露他人手机号
-4. **资源消耗**: 大量请求可能影响系统性能
-5. **接口稳定性**: 部分接口可能失效或变更
+### 合法使用
 
-## 🔒 安全建议
+1. **仅用于授权测试** - 仅在获得明确授权的范围内使用
+2. **遵守法律法规** - 确保使用符合当地网络安全法规
+3. **尊重隐私权** - 不得泄露或滥用他人手机号信息
+4. **频率控制** - 避免对单一目标过度请求，防止服务中断
 
-### 对于开发者
+### 技术限制
 
-如果您是API提供方，建议采取以下防护措施：
+5. **接口稳定性** - 第三方接口可能随时变更或关闭
+6. **网络依赖** - 需要稳定的网络连接
+7. **资源消耗** - 大量请求可能影响系统性能
+8. **成功率波动** - 受目标接口风控策略影响
 
-- ✅ 添加图形验证码（滑块、点选等）
-- ✅ 实施频率限制（IP/手机号维度）
-- ✅ 使用设备指纹识别
-- ✅ 部署行为分析系统
-- ✅ 实现动态Token验证
-- ✅ 建立风控黑名单机制
+### 安全建议
 
-### 对于用户
+9. **保护个人信息** - 不要在公共场合展示运行截图
+10. **定期清理日志** - `smsboom.log` 文件包含敏感信息
+11. **使用虚拟环境** - 建议使用 Python 虚拟环境隔离依赖
 
-- 保护好个人手机号信息
-- 谨慎授权第三方应用
-- 定期检查短信记录
-- 发现异常及时举报
+## 🔒 防护建议
+
+### 对于API提供方
+
+如果您是短信接口提供方，建议采取以下防护措施：
+
+- ✅ **图形验证码** - 添加滑块、点选等交互式验证
+- ✅ **频率限制** - 实施IP/手机号维度的请求频率控制
+- ✅ **设备指纹** - 识别并限制异常设备
+- ✅ **行为分析** - 部署风控系统检测异常模式
+- ✅ **Token验证** - 实现动态Token和签名机制
+- ✅ **黑名单机制** - 建立恶意IP和手机号黑名单
+- ✅ **人机验证** - 引入reCAPTCHA等验证方案
+
+### 对于普通用户
+
+- 🔐 **保护手机号** - 谨慎授权第三方应用获取手机号
+- 📱 **定期检查** - 关注短信记录中的异常情况
+- 🚫 **拒绝骚扰** - 收到垃圾短信及时举报
+- 🛡️ **启用拦截** - 使用手机管家等工具拦截骚扰短信
 
 ## 🐛 常见问题
 
-**Q: 应该使用哪个版本？**  
-A: 推荐使用重构版（`SMSBoom_Refactored.py`），代码更清晰，易于维护和扩展。
+### Q1: 为什么某些接口不工作？
 
-**Q: 如何将原版的接口迁移到重构版？**  
-A: 参考 `interfaces_config.json` 的格式，将接口配置转换为JSON格式。详见 `REFACTOR_GUIDE.md`。
+**A**: 可能的原因：
+- 第三方接口已更新API地址或参数格式
+- 接口增加了验证码或其他防护机制
+- 网络连接问题或超时
+- 接口暂时关闭或维护
 
-**Q: 为什么某些接口不工作？**  
-A: 第三方接口可能已更新或关闭，需要定期维护。重构版可以方便地禁用失效接口。
+**解决方案**：在 `interfaces_complete.json` 中将失效接口的 `enabled` 设置为 `false`
 
-**Q: 如何添加新的短信接口？**  
-A: 
-- 重构版：编辑 `interfaces_config.json` 或调用 `add_custom_interface()` 方法
-- 原版：参考现有函数格式，添加新的请求函数并注册到任务列表
+### Q2: 如何添加新的短信接口？
 
-**Q: 运行时出现错误怎么办？**  
-A: 检查网络连接、确认依赖库已安装、查看 `smsboom.log` 日志文件。
+**A**: 编辑 `interfaces_complete.json` 文件，按照现有格式添加新接口配置：
 
-**Q: 如何调整接口调用频率？**  
-A: 重构版支持设置 `weight` 参数控制每个接口的调用次数。
+```json
+{
+  "name": "新接口名称",
+  "url": "https://api.example.com/sms?phone={phone}",
+  "method": "POST",
+  "headers": {"Content-Type": "application/json"},
+  "data_template": "{\"mobile\":\"{phone}\"}",
+  "enabled": true,
+  "weight": 1
+}
+```
 
-## 📝 开发计划
+### Q3: 运行时出现错误怎么办？
 
-### 重构版路线图
+**A**: 
+1. 检查网络连接是否正常
+2. 确认已安装所有依赖：`pip install -r requirements.txt`
+3. 查看 `smsboom.log` 日志文件了解详细错误信息
+4. 检查 Python 版本是否为 3.8+
+
+### Q4: 如何调整接口调用频率？
+
+**A**: 修改接口配置中的 `weight` 参数：
+- `weight: 1` - 每轮调用1次（默认）
+- `weight: 3` - 每轮调用3次
+- `weight: 0` - 不调用（等同于禁用）
+
+### Q5: 程序会一直运行吗？
+
+**A**: 是的，程序会持续循环执行。如需停止：
+- 按 `Ctrl+C` 强制中断
+- 或者关闭终端窗口
+
+### Q6: 日志文件在哪里？
+
+**A**: 运行后会在项目根目录自动生成 `smsboom.log` 文件，记录所有请求详情。
+
+### Q7: 如何贡献新的有效接口？
+
+**A**: 
+1. Fork 本项目
+2. 在 `interfaces_complete.json` 中添加新接口配置
+3. 测试确保接口可用
+4. 提交 Pull Request
+
+## 📝 开发路线图
+
+### 已完成 ✅
 
 - [x] 抽象化架构设计
-- [x] 配置文件外置化
+- [x] 配置文件外置化（JSON格式）
 - [x] 日志系统集成
-- [x] 类型提示和文档
-- [ ] 异步支持（asyncio/aiohttp）
-- [ ] 代理池支持
-- [ ] 结果导出（CSV/Excel）
-- [ ] Web管理界面
-- [ ] 接口有效性自动检测
-- [ ] 速率限制智能控制
-- [ ] 单元测试覆盖
+- [x] 类型提示和数据类
+- [x] 95+ 个接口配置
+- [x] 实时进度条显示
+- [x] 自动循环执行
 
-### 原版改进方向
+### 计划中 🚧
 
-- [ ] 接口有效性检测
-- [ ] 结果记录和导出
-- [ ] 更完善的错误处理
-- [ ] 速率限制控制
+- [ ] **异步支持** - 使用 asyncio/aiohttp 提升并发性能
+- [ ] **代理池** - 支持HTTP代理轮换
+- [ ] **结果导出** - 导出为CSV/Excel格式
+- [ ] **Web管理界面** - 可视化配置和管理接口
+- [ ] **接口有效性检测** - 自动测试并标记失效接口
+- [ ] **智能速率控制** - 根据响应动态调整请求频率
+- [ ] **单元测试** - 提高代码覆盖率
+- [ ] **Docker支持** - 容器化部署
+- [ ] **多语言支持** - 国际化界面
 
 ## 🤝 贡献指南
 
 欢迎提交 Issue 和 Pull Request！
 
-1. Fork 本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+### 贡献流程
+
+1. **Fork 本项目**
+2. **创建特性分支** - `git checkout -b feature/AmazingFeature`
+3. **提交更改** - `git commit -m 'Add some AmazingFeature'`
+4. **推送到分支** - `git push origin feature/AmazingFeature`
+5. **开启 Pull Request**
+
+### 贡献内容
+
+我们特别欢迎以下类型的贡献：
+
+- 🐛 **Bug修复** - 发现并修复问题
+- ✨ **新功能** - 添加有价值的功能
+- 📝 **文档改进** - 完善使用说明和注释
+- 🔧 **接口更新** - 提供新的有效接口配置
+- 🎨 **代码优化** - 提升性能和可读性
+
+### 代码规范
+
+- 遵循 PEP 8 Python 编码规范
+- 添加必要的类型提示
+- 编写清晰的注释和文档字符串
+- 确保新功能有充分的测试
 
 ## 📄 许可证
 
-本项目仅供学习研究使用。
+本项目仅供学习研究使用，请遵守当地法律法规。
 
 ## 🙏 致谢
 
-感谢所有为网络安全研究做出贡献的开发者。
+- 感谢所有为网络安全研究做出贡献的开发者
+- 感谢上一个项目的作者：[MallocPointer/SMSBoom-Terminal](https://github.com/MallocPointer/SMSBoom-Terminal)
+- 感谢所有贡献者的支持和反馈
 
-## 感谢上一个作者的代码
+## 📞 联系方式
 
-- 项目地址: https://github.com/MallocPointer/SMSBoom-Terminal
-- 问题反馈: 请通过 GitHub Issues 提交
+- **问题反馈**: 请通过 GitHub Issues 提交
+- **项目地址**: https://github.com/MallocPointer/SMSBoom-Terminal
 
 ---
 
-**最后提醒**: 技术无罪，但使用需谨慎。请将所学用于正途，共同维护良好的网络环境！🌐
+<div align="center">
+
+**最后提醒**: 技术无罪，但使用需谨慎  
+请将所学用于正途，共同维护良好的网络环境！🌐
+
+Made with ❤️ by Security Researchers
+
+</div>
