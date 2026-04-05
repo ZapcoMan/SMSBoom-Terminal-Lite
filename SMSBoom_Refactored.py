@@ -21,21 +21,15 @@ import logging
 init(autoreset=True)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# 配置日志
+# 配置日志 - 只写入文件,不输出到控制台(避免干扰进度条)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('smsboom.log', encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
+        logging.FileHandler('smsboom.log', encoding='utf-8')
     ]
 )
 logger = logging.getLogger(__name__)
-
-# 设置StreamHandler为UTF-8编码（解决Windows中文乱码）
-for handler in logger.handlers:
-    if isinstance(handler, logging.StreamHandler):
-        handler.stream = open(sys.stdout.fileno(), mode='w', encoding='utf-8', closefd=False)
 
 
 class RequestMethod(Enum):
@@ -69,8 +63,15 @@ class SMSInterface:
     
     def build_request(self, phone: str) -> Dict:
         """构建请求参数"""
+        # 安全地格式化URL,处理可能包含的JSON花括号
+        try:
+            url = self.url.format(phone=phone) if '{phone}' in self.url else self.url
+        except (KeyError, ValueError):
+            # 如果格式化失败,尝试转义其他花括号
+            url = self.url.replace('{{', '{{{{').replace('}}', '}}}}').format(phone=phone) if '{phone}' in self.url else self.url
+        
         request_config = {
-            'url': self.url.format(phone=phone) if '{phone}' in self.url else self.url,
+            'url': url,
             'headers': self.headers.copy(),
             'timeout': self.timeout,
             'verify': False
@@ -78,24 +79,32 @@ class SMSInterface:
         
         # 处理URL参数
         if self.params:
-            request_config['params'] = {
-                k: v.format(phone=phone) if isinstance(v, str) and '{phone}' in v else v
-                for k, v in self.params.items()
-            }
+            try:
+                request_config['params'] = {
+                    k: v.format(phone=phone) if isinstance(v, str) and '{phone}' in v else v
+                    for k, v in self.params.items()
+                }
+            except (KeyError, ValueError):
+                request_config['params'] = self.params.copy()
         
         # 处理请求体
         if self.data_template:
-            data_str = self.data_template.format(phone=phone)
-            
-            if self.content_type == ContentType.JSON:
-                try:
-                    request_config['json'] = json.loads(data_str)
-                except json.JSONDecodeError:
+            try:
+                # 先替换 phone 占位符,保留其他 JSON 结构
+                data_str = self.data_template.replace('{phone}', phone)
+                
+                if self.content_type == ContentType.JSON:
+                    try:
+                        request_config['json'] = json.loads(data_str)
+                    except json.JSONDecodeError:
+                        request_config['data'] = data_str
+                elif self.content_type == ContentType.FORM:
                     request_config['data'] = data_str
-            elif self.content_type == ContentType.FORM:
-                request_config['data'] = data_str
-            else:
-                request_config['data'] = data_str
+                else:
+                    request_config['data'] = data_str
+            except Exception as e:
+                logger.debug(f"{self.name} 数据模板处理失败: {e}")
+                request_config['data'] = self.data_template
         
         return request_config
     
@@ -224,13 +233,14 @@ class ProgressTracker:
             self.failed += 1
     
     def display(self):
-        """显示进度条"""
+        """显示进度条 - 原地更新不换行"""
         percent = int((self.current / self.total) * 100) if self.total > 0 else 0
         progress = int((self.current / self.total) * self.progress_width) if self.total > 0 else 0
         
         bar = f"{Fore.GREEN}{'█' * progress}{Fore.RED}{'░' * (self.progress_width - progress)}{Style.RESET_ALL}"
         
-        sys.stdout.write(f"\r{Fore.CYAN}[{bar}] {percent}% | "
+        # 使用 \r 回到行首，\033[K 清除到行尾的内容，避免残留字符
+        sys.stdout.write(f"\r\033[K{Fore.CYAN}[{bar}] {percent}% | "
                         f"成功: {Fore.GREEN}{self.success}{Style.RESET_ALL} | "
                         f"失败: {Fore.RED}{self.failed}{Style.RESET_ALL} | "
                         f"任务: {self.current}/{self.total}")
