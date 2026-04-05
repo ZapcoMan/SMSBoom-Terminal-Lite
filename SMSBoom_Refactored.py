@@ -1,5 +1,5 @@
 """
-SMSBoom-Terminal 重构版 - 抽象化设计
+SMSBoom-Terminal-Lite 重构版 - 抽象化设计
 采用面向对象和配置驱动的设计模式
 """
 
