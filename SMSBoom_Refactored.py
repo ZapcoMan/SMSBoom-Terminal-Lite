@@ -26,11 +26,16 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('smsboom.log'),
-        logging.StreamHandler()
+        logging.FileHandler('smsboom.log', encoding='utf-8'),
+        logging.StreamHandler(sys.stdout)
     ]
 )
 logger = logging.getLogger(__name__)
+
+# 设置StreamHandler为UTF-8编码（解决Windows中文乱码）
+for handler in logger.handlers:
+    if isinstance(handler, logging.StreamHandler):
+        handler.stream = open(sys.stdout.fileno(), mode='w', encoding='utf-8', closefd=False)
 
 
 class RequestMethod(Enum):
