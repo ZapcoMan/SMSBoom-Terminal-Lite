@@ -64,11 +64,17 @@ class SMSInterface:
     def build_request(self, phone: str) -> Dict:
         """构建请求参数"""
         # 安全地格式化URL,处理可能包含的JSON花括号
-        try:
-            url = self.url.format(phone=phone) if '{phone}' in self.url else self.url
-        except (KeyError, ValueError):
-            # 如果格式化失败,尝试转义其他花括号
-            url = self.url.replace('{{', '{{{{').replace('}}', '}}}}').format(phone=phone) if '{phone}' in self.url else self.url
+        url = self.url
+        if '{phone}' in self.url:
+            try:
+                url = self.url.format(phone=phone)
+            except (KeyError, ValueError):
+                # 如果格式化失败,尝试转义其他花括号
+                escaped_url = self.url.replace('{{', '{{{{').replace('}}', '}}}}')
+                try:
+                    url = escaped_url.format(phone=phone)
+                except (KeyError, ValueError):
+                    url = self.url
         
         request_config = {
             'url': url,
@@ -79,32 +85,31 @@ class SMSInterface:
         
         # 处理URL参数
         if self.params:
-            try:
-                request_config['params'] = {
-                    k: v.format(phone=phone) if isinstance(v, str) and '{phone}' in v else v
-                    for k, v in self.params.items()
-                }
-            except (KeyError, ValueError):
-                request_config['params'] = self.params.copy()
+            params = {}
+            for k, v in self.params.items():
+                if isinstance(v, str) and '{phone}' in v:
+                    try:
+                        params[k] = v.format(phone=phone)
+                    except (KeyError, ValueError):
+                        params[k] = v
+                else:
+                    params[k] = v
+            request_config['params'] = params
         
         # 处理请求体
         if self.data_template:
-            try:
-                # 先替换 phone 占位符,保留其他 JSON 结构
-                data_str = self.data_template.replace('{phone}', phone)
-                
-                if self.content_type == ContentType.JSON:
-                    try:
-                        request_config['json'] = json.loads(data_str)
-                    except json.JSONDecodeError:
-                        request_config['data'] = data_str
-                elif self.content_type == ContentType.FORM:
+            data_str = self.data_template.replace('{phone}', phone)
+
+            if self.content_type == ContentType.JSON:
+                try:
+                    request_config['json'] = json.loads(data_str)
+                except json.JSONDecodeError as e:
+                    logger.debug(f"{self.name} JSON解析失败: {e}")
                     request_config['data'] = data_str
-                else:
-                    request_config['data'] = data_str
-            except Exception as e:
-                logger.debug(f"{self.name} 数据模板处理失败: {e}")
-                request_config['data'] = self.data_template
+            elif self.content_type == ContentType.FORM:
+                request_config['data'] = data_str
+            else:
+                request_config['data'] = data_str
         
         return request_config
     
@@ -114,13 +119,13 @@ class SMSInterface:
             config = self.build_request(phone)
             method_func = getattr(requests, self.method.value.lower())
             response = method_func(**config)
-            
+
             success = response.status_code in [200, 201, 204]
             logger.debug(f"{self.name}: {response.status_code}")
             return success
-            
-        except Exception as e:
-            logger.error(f"{self.name} 失败: {str(e)}")
+
+        except requests.RequestException as e:
+            logger.error(f"{self.name} 请求失败: {e}")
             return False
 
 
