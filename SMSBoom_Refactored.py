@@ -104,11 +104,21 @@ class SMSInterface:
             data_str = self.data_template.replace('{phone}', phone)
 
             if self.content_type == ContentType.JSON:
+                # 尝试归一化模板格式（处理 ""{{...}}"" 和 {{...}} 格式）
+                normalized = data_str.strip()
+                if normalized.startswith('""') and normalized.endswith('""'):
+                    normalized = normalized[2:-2].replace('{{', '{').replace('}}', '}')
+                elif normalized.startswith('{{') and normalized.endswith('}}'):
+                    normalized = normalized.replace('{{', '{').replace('}}', '}')
                 try:
-                    request_config['json'] = json.loads(data_str)
+                    request_config['json'] = json.loads(normalized)
                 except json.JSONDecodeError as e:
-                    logger.debug(f"{self.name} JSON解析失败: {e}")
-                    request_config['data'] = data_str
+                    # 回退：尝试解析原始替换结果
+                    try:
+                        request_config['json'] = json.loads(data_str)
+                    except json.JSONDecodeError:
+                        logger.debug(f"{self.name} JSON解析失败: {e}")
+                        request_config['data'] = data_str
             elif self.content_type == ContentType.FORM:
                 request_config['data'] = data_str
             else:
@@ -284,6 +294,19 @@ class InterfaceHealthManager:
     # ---------- 探活 ----------
 
     @staticmethod
+    def _normalize_json_template(tmpl: str) -> str:
+        """将各种 JSON 模板格式归一化为可解析的 JSON 字符串"""
+        s = tmpl.strip()
+        # 1. ""{{...}}""  →  {...}   (双引号包裹 + 双花括号转义)
+        if s.startswith('""') and s.endswith('""'):
+            s = s[2:-2]
+            s = s.replace('{{', '{').replace('}}', '}')
+        # 2. {{...}}  →  {...}        (仅双花括号转义)
+        elif s.startswith('{{') and s.endswith('}}'):
+            s = s.replace('{{', '{').replace('}}', '}')
+        return s
+
+    @staticmethod
     def _check_interface_structure(iface: SMSInterface) -> Tuple[bool, str]:
         """检查接口结构有效性（不发网络请求）"""
         # 1. URL 检查
@@ -296,11 +319,9 @@ class InterfaceHealthManager:
 
             # JSON 内容类型检查
             if iface.content_type == ContentType.JSON:
-                # 替换占位符后尝试解析
-                test_data = tmpl.replace('{phone}', '13800138000')
-                # 处理双引号包裹的模板 ""{...}""
-                if test_data.startswith('""') and test_data.endswith('""'):
-                    test_data = test_data[2:-2]
+                # 归一化模板格式后替换占位符
+                normalized = InterfaceHealthManager._normalize_json_template(tmpl)
+                test_data = normalized.replace('{phone}', '13800138000')
                 try:
                     json.loads(test_data)
                 except json.JSONDecodeError:
