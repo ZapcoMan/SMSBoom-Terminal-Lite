@@ -358,6 +358,7 @@ class InterfaceHealthManager:
             print(f"{Fore.CYAN}📂 已加载历史健康数据: {valid_cached}/{len(self.health_data)} 个接口{Style.RESET_ALL}")
 
         passed, failed = 0, 0
+        failed_list = []  # 收集失败接口，不逐条打印
         for iface in enabled:
             valid, msg = self._check_interface_structure(iface)
             status = self._get_or_create(iface.name)
@@ -370,7 +371,7 @@ class InterfaceHealthManager:
                 print(f"  {Fore.GREEN}✓{Style.RESET_ALL} {iface.name:<25} {grade_color}[{status.grade.value}]{Style.RESET_ALL}")
             else:
                 failed += 1
-                print(f"  {Fore.RED}✗{Style.RESET_ALL} {iface.name:<25} {Fore.RED}{msg}{Style.RESET_ALL}")
+                failed_list.append((iface.name, msg))
 
         # 汇总
         print(f"\n{Fore.CYAN}{'─'*50}")
@@ -378,7 +379,7 @@ class InterfaceHealthManager:
               f"{Fore.RED}✗ 未通过: {failed}{Style.RESET_ALL}  "
               f"成功率: {(passed/total*100):.1f}%")
         if failed > 0:
-            print(f"{Fore.YELLOW}⚠️  未通过的接口将被自动跳过{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}⚠️  {failed} 个无效接口已自动跳过（不逐一显示）{Style.RESET_ALL}")
         print()
 
         self.save_cache()
@@ -425,15 +426,18 @@ class InterfaceHealthManager:
             color = self.GRADE_COLORS[grade]
             print(f"  {color}[{grade.value}]{Style.RESET_ALL} {count} 个")
 
-        # 按成功率排序展示所有接口
+        # 按成功率排序展示，过滤掉无效且无调用记录的接口
         sorted_items = sorted(self.health_data.values(), key=lambda s: s.success_rate, reverse=True)
+        display_items = [s for s in sorted_items if s.structurally_valid or s.total_count > 0]
+        if not display_items:
+            print(f"\n  {Fore.YELLOW}暂无有效接口数据{Style.RESET_ALL}")
+            return
         print(f"\n  {'接口名称':<25} {'等级':^5} {'成功率':^8} {'成功/总数'}")
-        for status in sorted_items:
+        for status in display_items:
             color = self.GRADE_COLORS.get(status.grade, Fore.WHITE)
-            valid_mark = "" if status.structurally_valid else f" {Fore.RED}[无效]{Style.RESET_ALL}"
             print(f"  {status.name:<25} {color}[{status.grade.value}]{Style.RESET_ALL} "
                   f"{status.success_rate:>5.1f}%   "
-                  f"{status.success_count}/{status.total_count}{valid_mark}")
+                  f"{status.success_count}/{status.total_count}")
         print()
 
 
