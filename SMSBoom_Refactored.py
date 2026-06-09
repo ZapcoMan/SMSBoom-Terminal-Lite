@@ -348,38 +348,23 @@ class InterfaceHealthManager:
         """运行接口健康探活（结构检查 + 缓存加载）"""
         enabled = [iface for iface in interfaces if iface.enabled]
         total = len(enabled)
-        print(f"\n{Fore.CYAN}{'='*50}")
-        print(f"{Fore.YELLOW}🔍 接口健康探活  ({total} 个启用接口){Style.RESET_ALL}")
-        print(f"{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
-
-        # 显示缓存加载信息
-        if self.health_data:
-            valid_cached = sum(1 for s in self.health_data.values() if s.structurally_valid)
-            print(f"{Fore.CYAN}📂 已加载历史健康数据: {valid_cached}/{len(self.health_data)} 个接口{Style.RESET_ALL}")
-
         passed, failed = 0, 0
-        failed_list = []  # 收集失败接口，不逐条打印
         for iface in enabled:
             valid, msg = self._check_interface_structure(iface)
             status = self._get_or_create(iface.name)
             status.structurally_valid = valid
             self._recalculate_grade(status)
-
             if valid:
                 passed += 1
-                grade_color = self.GRADE_COLORS.get(status.grade, Fore.WHITE)
-                print(f"  {Fore.GREEN}✓{Style.RESET_ALL} {iface.name:<25} {grade_color}[{status.grade.value}]{Style.RESET_ALL}")
             else:
                 failed += 1
-                failed_list.append((iface.name, msg))
 
-        # 汇总
+        # 仅输出汇总结果
         print(f"\n{Fore.CYAN}{'─'*50}")
-        print(f"{Fore.GREEN}✓ 通过: {passed}{Style.RESET_ALL}  "
-              f"{Fore.RED}✗ 未通过: {failed}{Style.RESET_ALL}  "
-              f"成功率: {(passed/total*100):.1f}%")
-        if failed > 0:
-            print(f"{Fore.YELLOW}⚠️  {failed} 个无效接口已自动跳过（不逐一显示）{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}🔍 接口健康检测{Style.RESET_ALL}  "
+              f"{Fore.GREEN}✓ 可用: {passed}{Style.RESET_ALL}  "
+              f"{Fore.RED}✗ 无效: {failed}{Style.RESET_ALL}  "
+              f"({(passed/total*100):.1f}%)")
         print()
 
         self.save_cache()
