@@ -566,7 +566,7 @@ class UIController:
         """打印Logo"""
         logo = f"""
 {Fore.BLUE}+-----------------------------------+
-{Fore.CYAN}|     SMSBoom Terminal Lite v2.0    |
+{Fore.CYAN}|     SMSBoom Terminal Lite v2.3    |
 {Fore.BLUE}+-----------------------------------+
 {Fore.YELLOW}      抽象化重构版 - 更安全高效
 {Style.RESET_ALL}
