@@ -1,0 +1,956 @@
+{
+  "last_updated": "2026-06-09 15:39:43",
+  "total_interfaces": 95,
+  "interfaces": {
+    "短信1": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信2": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信3": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信4": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信5": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信6": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信7": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信8": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信9": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信10": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信11": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信12": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信13": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信14": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信15": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "短信16": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "request_url26": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url1": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url2": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url3": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url4": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url5": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url6": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url7": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url8": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url9": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "request_url10": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url11": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url12": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url13": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url14": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "request_url15": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url16": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url17": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url18": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url19": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url20": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "request_url21": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url22": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url23": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url24": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url25": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url27": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url28": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url29": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url30": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url31": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "request_url32": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "request_url33": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_qixin18_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_mikecrm_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_dxmbaoxian_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_planplus_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_cindasc_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_ghd_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_ctrip_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_lvcchong_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_yakeyun_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_ygj_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_dsssp_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_icharge_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_bird_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_hellobike_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_myzhishi_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_suzhiyouxuan_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_jswxjy_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_yangfedu_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_yidivip_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_linde_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_dxzuji_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_quzhououlan_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_ddzuwu_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_yimitongxun_sms": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request1": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request2": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request3": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request4": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request5": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request6": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request7": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request8": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request9": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request10": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request11": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request12": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request13": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request14": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request15": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request16": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request17": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request18": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request19": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request20": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "B",
+      "structurally_valid": true,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 1.5
+    },
+    "send_request21": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    },
+    "send_request22": {
+      "success_count": 0,
+      "fail_count": 0,
+      "success_rate": 0.0,
+      "grade": "D",
+      "structurally_valid": false,
+      "last_success": true,
+      "consecutive_fails": 0,
+      "dynamic_weight": 0.0
+    }
+  }
+}
