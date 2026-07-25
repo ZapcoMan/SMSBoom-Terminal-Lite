@@ -57,3 +57,4 @@ springboot/target/*
 hs_err_pid*
 replay_pid*
 /dump.rdb
+/.qwen/
