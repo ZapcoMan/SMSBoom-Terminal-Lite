@@ -1,11 +1,11 @@
 {
-  "last_updated": "2026-06-09 16:42:44",
-  "total_interfaces": 95,
+  "last_updated": "2026-07-25 14:26:05",
+  "total_interfaces": 96,
   "interfaces": {
     "短信1": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -13,7 +13,7 @@
       "dynamic_weight": 3.0
     },
     "短信2": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -24,18 +24,18 @@
     },
     "短信3": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "短信4": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -43,9 +43,9 @@
       "dynamic_weight": 3.0
     },
     "短信5": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -54,28 +54,28 @@
     },
     "短信6": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "短信7": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "短信8": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -83,7 +83,7 @@
       "dynamic_weight": 3.0
     },
     "短信9": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -93,7 +93,7 @@
       "dynamic_weight": 3.0
     },
     "短信10": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -103,9 +103,9 @@
       "dynamic_weight": 3.0
     },
     "短信11": {
-      "success_count": 101,
+      "success_count": 107,
       "fail_count": 2,
-      "success_rate": 98.1,
+      "success_rate": 98.2,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -113,7 +113,7 @@
       "dynamic_weight": 3.0
     },
     "短信12": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -124,18 +124,18 @@
     },
     "短信13": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "短信14": {
-      "success_count": 101,
+      "success_count": 107,
       "fail_count": 2,
-      "success_rate": 98.1,
+      "success_rate": 98.2,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -144,16 +144,16 @@
     },
     "短信15": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "短信16": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -253,7 +253,7 @@
       "dynamic_weight": 0.0
     },
     "request_url9": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -304,12 +304,12 @@
     },
     "request_url14": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "request_url15": {
@@ -364,12 +364,12 @@
     },
     "request_url20": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "request_url21": {
@@ -474,12 +474,12 @@
     },
     "request_url32": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "request_url33": {
@@ -603,7 +603,7 @@
       "dynamic_weight": 0.0
     },
     "send_icharge_sms": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -613,7 +613,7 @@
       "dynamic_weight": 3.0
     },
     "send_bird_sms": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -643,9 +643,9 @@
       "dynamic_weight": 0.0
     },
     "send_suzhiyouxuan_sms": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -663,9 +663,9 @@
       "dynamic_weight": 0.0
     },
     "send_yangfedu_sms": {
-      "success_count": 99,
+      "success_count": 105,
       "fail_count": 4,
-      "success_rate": 96.1,
+      "success_rate": 96.3,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -673,7 +673,7 @@
       "dynamic_weight": 3.0
     },
     "send_yidivip_sms": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -684,12 +684,12 @@
     },
     "send_linde_sms": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_dxzuji_sms": {
@@ -703,9 +703,9 @@
       "dynamic_weight": 0.0
     },
     "send_quzhououlan_sms": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -733,7 +733,7 @@
       "dynamic_weight": 0.0
     },
     "send_request1": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -743,7 +743,7 @@
       "dynamic_weight": 3.0
     },
     "send_request2": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -753,7 +753,7 @@
       "dynamic_weight": 3.0
     },
     "send_request3": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -763,7 +763,7 @@
       "dynamic_weight": 3.0
     },
     "send_request4": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -774,38 +774,38 @@
     },
     "send_request5": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_request6": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_request7": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_request8": {
-      "success_count": 60,
+      "success_count": 66,
       "fail_count": 11,
-      "success_rate": 84.5,
+      "success_rate": 85.7,
       "grade": "A",
       "structurally_valid": true,
       "last_success": true,
@@ -814,26 +814,26 @@
     },
     "send_request9": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_request10": {
-      "success_count": 102,
+      "success_count": 108,
       "fail_count": 1,
-      "success_rate": 99.0,
+      "success_rate": 99.1,
       "grade": "A",
       "structurally_valid": true,
-      "last_success": false,
-      "consecutive_fails": 1,
+      "last_success": true,
+      "consecutive_fails": 0,
       "dynamic_weight": 3.0
     },
     "send_request11": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -894,12 +894,12 @@
     },
     "send_request17": {
       "success_count": 0,
-      "fail_count": 35,
+      "fail_count": 37,
       "success_rate": 0.0,
       "grade": "D",
       "structurally_valid": true,
       "last_success": false,
-      "consecutive_fails": 35,
+      "consecutive_fails": 37,
       "dynamic_weight": 0.0
     },
     "send_request18": {
@@ -923,7 +923,7 @@
       "dynamic_weight": 0.0
     },
     "send_request20": {
-      "success_count": 103,
+      "success_count": 109,
       "fail_count": 0,
       "success_rate": 100.0,
       "grade": "A",
@@ -951,6 +951,16 @@
       "last_success": true,
       "consecutive_fails": 0,
       "dynamic_weight": 0.0
+    },
+    "send_showinai_sms": {
+      "success_count": 1,
+      "fail_count": 3,
+      "success_rate": 25.0,
+      "grade": "C",
+      "structurally_valid": true,
+      "last_success": false,
+      "consecutive_fails": 3,
+      "dynamic_weight": 0.5
     }
   }
 }

@@ -2,11 +2,11 @@
   "version": "2.0",
   "description": "SMSBoom完整接口配置 - 从原版代码自动提取",
   "last_updated": "2026-04-05",
-  "total_interfaces": 95,
+  "total_interfaces": 96,
   "statistics": {
     "中文命名接口": 16,
     "request_url接口": 33,
-    "send_sms接口": 24,
+    "send_sms接口": 25,
     "send_request接口": 22
   },
   "interfaces": [
@@ -1390,6 +1390,33 @@
         "Referer": "https://servicewechat.com/wx5fb830b234320db1/144/page-frame.html"
       },
       "data_template": "{\"mobile\": phone}",
+      "content_type": "application/json",
+      "timeout": 5,
+      "enabled": true,
+      "weight": 1
+    },
+    {
+      "name": "send_showinai_sms",
+      "url": "https://app.showinai.cn/api/auth/send_sms",
+      "method": "POST",
+      "headers": {
+        "Host": "app.showinai.cn",
+        "Content-Type": "application/json",
+        "Sec-Ch-Ua-Platform": "\"Windows\"",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Sec-Ch-Ua": "\"Not(A:Brand\";v=\"8\", \"Chromium\";v=\"144\"",
+        "Sec-Ch-Ua-Mobile": "?0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+        "Accept": "*/*",
+        "Origin": "https://8.135.62.233",
+        "Sec-Fetch-Site": "cross-site",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Dest": "empty",
+        "Referer": "https://8.135.62.233/",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+      },
+      "data_template": "\"\"{{\"phone_number\":\"{phone}\"}}\"\"",
       "content_type": "application/json",
       "timeout": 5,
       "enabled": true,
